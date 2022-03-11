@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 function App() {
   const [characters, setCharacters] = useState([]);
   const [inputCharacters, setInputCharacters] = useState('');
+  const [seconds, setSeconds] = useState(0);
+  const [corrrectCharacterCount, setcorrrectCharacterCount] = useState(0);
 
   useEffect(() => {
     if (!characters.length) {
@@ -13,9 +15,13 @@ function App() {
         splitCharactersFromQuote(quote);
       }
       getQuote();
+
+      setInterval(() => {
+        setSeconds(seconds => seconds + 1);
+      }, 1000);
     }
 
-  }, [characters])
+  }, [characters, seconds])
 
   function splitCharactersFromQuote(quote) {
     const splitedCharacters = quote.split('');
@@ -28,21 +34,27 @@ function App() {
     setInputCharacters(event.target.value)
     if (inputCharacters && inputCharacters.length === characters.length) {
       setCharacters([]);
-      setInputCharacters('')
+      setInputCharacters('');
+      setSeconds(0);
+      setcorrrectCharacterCount(0);
     }
     checkCharacter(event.target.value);
   }
 
   function checkCharacter(input) {
+
+    let correctCount = 0;
+
     characters.forEach((el, i) => {
 
       if (input.length >= i + 1) {
         let matched = input[i] === el.name
-        console.log(matched)
         if (!matched) {
           el.correct = false
         } else {
           el.correct = true
+          correctCount = correctCount + 1;
+          setcorrrectCharacterCount(correctCount)
         }
       } else {
         el.correct = null
@@ -63,6 +75,9 @@ function App() {
     }
   }
 
+  function wordcountPerMinute() {
+    return (corrrectCharacterCount / 5) / (seconds / 60)
+  }
 
   return (
     <div>
@@ -70,6 +85,9 @@ function App() {
       <div style={{ marginTop: '15px' }}>
         <textarea value={inputCharacters} onChange={handleChange}></textarea>
       </div>
+      <p>seconds:</p>{seconds}
+      <p>correctwc:</p> {corrrectCharacterCount}
+      <p>wpm</p> {wordcountPerMinute()}
     </div >
   );
 }
