@@ -16,9 +16,12 @@ function App() {
       }
       getQuote();
 
-      setInterval(() => {
+      const identifier = setInterval(() => {
         setSeconds(seconds => seconds + 1);
       }, 1000);
+
+      return () => {
+        clearInterval(identifier);
     }
 
   }, [characters, seconds])
