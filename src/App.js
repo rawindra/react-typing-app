@@ -22,9 +22,10 @@ function App() {
 
       return () => {
         clearInterval(identifier);
+      }
     }
-
   }, [characters, seconds])
+
 
   function splitCharactersFromQuote(quote) {
     const splitedCharacters = quote.split('');
@@ -88,9 +89,9 @@ function App() {
       <div style={{ marginTop: '15px' }}>
         <textarea value={inputCharacters} onChange={handleChange}></textarea>
       </div>
-      <p>seconds:</p>{seconds}
+      {/* <p>seconds:</p>{seconds} */}
       <p>correctwc:</p> {corrrectCharacterCount}
-      <p>wpm</p> {wordcountPerMinute()}
+      {/* <p>wpm</p> {wordcountPerMinute()} */}
     </div >
   );
 }
